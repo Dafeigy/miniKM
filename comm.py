@@ -17,19 +17,10 @@ class UDPserver():
             
             # 4. 发送数据到指定的电脑上的指定程序中
             udp_socket.sendto(data, dest_addr)
-            print("发送给客户端 %s 的数据: %s\n" % (dest_addr, data))
+            # print("发送给客户端 %s 的数据: %s\n" % (dest_addr, data))
     
             # 5. 关闭套接字
             udp_socket.close()
-
-    def get_host_IP(self):
-        try:
-            Socke = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            Socke.connect(('8.8.8.8', 80))
-            IP = Socke.getsockname()[0]
-        finally:
-            Socke.close()
-        return IP
 
     def receive_data(self):
  
@@ -42,10 +33,11 @@ class UDPserver():
         # 3. 绑定地址
         udp_socket.bind(dest_addr)
     
-        while True:
+        # while True:
         # 4. 等待接收对方发送的数据
-            receive_data, client_address = udp_socket.recvfrom(1024)
-            print("接收到了客户端 %s 传来的数据: %s\n" % (client_address, receive_data))
+        receive_data, client_address = udp_socket.recvfrom(1024)
+        # print("接收到了客户端 %s 传来的数据: %s\n" % (client_address, receive_data))
+        return receive_data
         
 if __name__ == "__main__":
     listener = UDPserver(port = 1224)
