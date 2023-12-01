@@ -7,7 +7,7 @@ import win32con
 
 # key = keys.Keys()
 vk_keys = list(vk.keys())
-listener = UDPserver(ip_addr="192.168.0.19", port = 1224)
+listener = UDPserver(ip_addr="192.168.0.124", port = 1224)
 last_data = []
 while True:
     # print("Listening >>>")
