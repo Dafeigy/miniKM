@@ -5,7 +5,7 @@ from samples import sample
 
 
 def process_complex(data:dict)->list:
-    return [abs(complex(each['real'],each['image'])) for each in data]
+    return [abs(complex(each['re'],each['im'])) for each in data]
 
 def rec_trans(sample):
     temp = tuple(

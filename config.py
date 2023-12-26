@@ -28,6 +28,6 @@ nb_gNB_TX = 2
 
 nb_UE_Ports = 1
 
-nb_subcarrier = 960
+nb_subcarrier = 624
 
-nb_classes = 7
+nb_classes = 6
