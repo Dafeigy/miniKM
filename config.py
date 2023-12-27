@@ -31,3 +31,5 @@ nb_UE_Ports = 1
 nb_subcarrier = 624
 
 nb_classes = 6
+
+action_list = ['idle','punch','kick','left','right','down']

@@ -1,14 +1,4 @@
-import Timesnet_DANN
-import torch
-import time
 import argparse
-import matplotlib.pyplot as plt
-
-
-import FT
-
-from samples import sample
-
 def set_args(description='5G classify model'):
     global logger
     #这里的一系列参数设置都是不考虑多GPU的情况
@@ -45,44 +35,3 @@ def set_args(description='5G classify model'):
     args=parser.parse_args()
 
     return args
-
-
-
-if __name__ == "__main__":
-    RANDOM_INPUT = True
-    
-    device = torch.device('cuda:0')
-    eval_mask = torch.ones(1,624).to(device)
-    st = torch.load('best.pth')
-    new_st = {key.replace("module.", ""): value for key, value in st.items()}
-    opt=set_args()
-    print("Model loaded:")
-    model = Timesnet_DANN.Model_domain(opt)
-
-    model.load_state_dict(new_st)
-    print("LOADED")
-    model = model.to(device)
-    model.eval()
-    timels = []
-    for _ in range(100):
-        print(f"{_+1}/100:")
-        st = time.time()
-        #sample: [1, 624, 1, 2]
-        # input_data = FT.rec_trans(sample).squeeze(0).permute(1,0,2).to(device)
-        if RANDOM_INPUT:
-            input_data = torch.randn(1, 624, 1, 2).squeeze(0).permute(1,0,2).to(device)
-        else:
-            input_data = FT.rec_trans(sample).squeeze(0).permute(1,0,2).to(device)
-        # print(input_data.shape)
-        timels.append(time.time()-st)
-        digits = model(input_data,eval_mask)
-        output = torch.argmax(digits[0],dim=1)
-        print(int(output.cpu().numpy()[0]))
-        # print(digits)
-        
-        print(min(timels),max(timels))
-    #     print(timels)
-    # plt.plot(timels[1:])
-    # plt.title("Inference Time using RTXA4000")
-    # print(f"Min Processing Time: {min(timels)}, Max Processing Time: {max(timels)}, Avg Processing Time: {sum(timels)/len(timels)}")
-    # plt.savefig("Xeon Silver 4214.jpg")

@@ -147,3 +147,7 @@ def get_metrics(y, y_pre):
 	# print(""+str(round(micro_precision,4))+"\t"+str(round(micro_recall,4))+"\t"+str(round(micro_f1,4)))
 	return acc
     #micro_f1, micro_precision, micro_recall,
+
+
+def process_complex(data:dict)->list:
+    return [abs(complex(each['real'],each['image'])) for each in data]

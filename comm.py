@@ -35,7 +35,7 @@ class UDPserver():
     
         # while True:
         # 4. 等待接收对方发送的数据
-        receive_data, client_address = udp_socket.recvfrom(1024)
+        receive_data, client_address = udp_socket.recvfrom(65535)
         # print("接收到了客户端 %s 传来的数据: %s\n" % (client_address, receive_data))
         return receive_data
         

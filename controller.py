@@ -24,4 +24,4 @@ if __name__ == "__main__":
         data = str(res).encode("utf-8")
         sender.send_data(target_ip, data)
         time.sleep(0.05)
-        print("发送给客户端 %s 的数据: %s\n" % (target_ip, data))
+        # print("发送给客户端 %s 的数据: %s\n" % (target_ip, data))
