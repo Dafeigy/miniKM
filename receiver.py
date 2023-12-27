@@ -5,7 +5,7 @@ import json
 from comm import UDPserver
 from google.protobuf import json_format
 import FT
-from config import action_list
+from config import action_list,action_dict
 
 import Timesnet_DANN
 import torch
@@ -14,8 +14,11 @@ import time
 from model_utils import set_args
 
 LISTEN_FROM = "192.168.0.19"
-PORT = 7776
-listener = UDPserver(ip_addr=LISTEN_FROM, port = PORT)
+TARGET_IP = "192.168.0.124"
+PORT_1 = 7776
+PORT_2 = 1224
+listener = UDPserver(ip_addr=LISTEN_FROM, port = PORT_1)
+sender = UDPserver(ip_addr=LISTEN_FROM,port=PORT_2)
 
 if __name__ == "__main__":
     start_time = time.time()
@@ -52,13 +55,19 @@ if __name__ == "__main__":
         output = torch.argmax(digits[0],dim=1)
         # signal_power = sample['SIGNALPOWER']             # int
         # noise_power = sample['NOISEPOWER']               # int
-
-        print('\033[44m{:^10}]\033[0m{}'.format("Model",
-                                                f"Model Predict as [{action_list[int(output.cpu().numpy()[0])]}]"))
-        print('\033[44m{:^10}]\033[0m{}'.format("Model",
-                                                f"digits tensor: {digits[0].tolist()[0]}"))
-        print('\033[41m{:^10}]\033[0m{}'.format("System",
-                                                f"From rec -> output using :{time.time() - st}s."))
-        print('\033[41m{:^10}]\033[0m{}'.format("System",
-                                                f"From process -> output using :{time.time() - bf_st}s."))
+        print('【{:^10}】 {}'.format("Model",
+                                    f"Model Predict as \033[5;37;42m【{action_list[int(output.cpu().numpy()[0])]}】\033[0m"))
+        print('【{:^10}】 {}'.format("Model",
+                                    f"digits tensor: {digits[0].tolist()[0]}"))
+        print('【{:^10}】 {}'.format("System",
+                                    f"From rec -> output using :{time.time() - st}s."))
+        print('【{:^10}】 {}'.format("System",
+                                    f"From process -> output using :{time.time() - bf_st}s."))
         
+
+        # sender.send_data()
+        res = [int(output.cpu().numpy()[0])]
+        # data = pickle.dumps(flags)
+        data = str(res).encode("utf-8")
+        sender.send_data(TARGET_IP, data)
+        print("Successfully send data.")

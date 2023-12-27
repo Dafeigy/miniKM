@@ -1,6 +1,5 @@
 import torch
 from config import *
-from samples import sample
 
 
 
@@ -18,11 +17,4 @@ def rec_trans(sample):
 def out_trans(output):
     # TODO: convert output tensor[1*n] to the ideal output and like [best_idx].
     pass
-
-if __name__ == "__main__":
-    # 修改`config.py`中的配置内容。
-    
-    tensor = rec_trans(sample)
-
-    print(tensor.shape)
 
