@@ -5,8 +5,9 @@ from config import vk
 import win32api
 import win32con
 
-# key = keys.Keys()
-vk_keys = list(vk.keys())
+from config import action_dict
+# key = keys.Keys()ssssssssssssssss
+vk_keys = list(action_dict.keys())
 listener = UDPserver(ip_addr="192.168.0.124", port = 1224)
 last_data = []
 while True:
@@ -16,8 +17,7 @@ while True:
     last_data = rec_data
     # Release
     for index in rel_data:
-        win32api.keybd_event(vk[vk_keys[index]],0,win32con.KEYEVENTF_KEYUP,0)
-    
+        win32api.keybd_event(vk[action_dict[vk_keys[index]]],0,win32con.KEYEVENTF_KEYUP,0)
     # Press
     for index in rec_data:
-        win32api.keybd_event(vk[vk_keys[index]],0,0,0)
+        win32api.keybd_event(vk[action_dict[vk_keys[index]]],0,0,0)

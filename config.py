@@ -33,4 +33,9 @@ nb_subcarrier = 624
 nb_classes = 6
 
 action_list = ['idle','punch','kick','left','right','down']
-action_dict = {k:v for k,v in enumerate(action_list)}
+action_dict = {"idle":"SPACE",
+               "punch":"I",
+               "kick":"K",
+               "left":"A",
+               "right":"D",
+               "down":"S",}
