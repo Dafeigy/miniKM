@@ -6,7 +6,7 @@ import win32api
 import win32con
 
 from config import action_dict
-# key = keys.Keys()ssssssssssssssss
+# key = keys.Keys()
 vk_keys = list(action_dict.keys())
 listener = UDPserver(ip_addr="192.168.0.124", port = 1224)
 last_data = []
