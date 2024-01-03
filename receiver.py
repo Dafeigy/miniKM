@@ -49,7 +49,7 @@ if __name__ == "__main__":
         ddd.ParseFromString(receive_data)
         sample=json.loads(json_format.MessageToJson(ddd))
         input_data = FT.rec_trans(sample).squeeze(0).permute(1,0,2).to(device)
-        # lsSRS shape : [1,624,1,2]
+        # sample shape : [1,624,1,2]
         bf_st = time.time()
         digits = model(input_data,eval_mask)
         output = torch.argmax(digits[0],dim=1)
