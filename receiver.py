@@ -7,7 +7,7 @@ from google.protobuf import json_format
 import FT
 from config import action_list,action_dict
 
-import Timesnet_DANN
+from model.PreFasterNet import *
 import torch
 import time
 
@@ -23,11 +23,12 @@ sender = UDPserver(ip_addr=LISTEN_FROM,port=PORT_2)
 if __name__ == "__main__":
     start_time = time.time()
     device = torch.device('cuda:0')
-    eval_mask = torch.ones(1,624).to(device)
-    st = torch.load('best.pth')
-    new_st = {key.replace("module.", ""): value for key, value in st.items()}
-    opt=set_args()
-    model = Timesnet_DANN.Model_domain(opt)
+    # eval_mask = torch.ones(1,624).to(device)
+    st = torch.load('new_pt.pt')
+    # new_st = {key.replace("module.", ""): value for key, value in st.items()}
+    new_st = st
+    args = set_args()
+    model = preFN(args=args)
     model.load_state_dict(new_st)
     print("[ MODEL ] MODEL LOADED.]")
     model = model.to(device)
@@ -37,8 +38,9 @@ if __name__ == "__main__":
     for _ in range(100):
         print(f"[ MODEL ] WARMING UP : {_+1}/100 NOW:")
         st = time.time()
-        random_data = torch.randn(1, 624, 1, 2).squeeze(0).permute(1,0,2).to(device)
-        digits = model(random_data,eval_mask)
+        random_data = torch.randn(1, 624, 2, 2).squeeze(0).permute(1,0,2).to(device)
+        print(random_data.shape)
+        digits = model(random_data)
     print("[ MODEL ] WARMING UP FINISHED")
     print("="*120)
     print("Waiting for input coming ...")
@@ -51,7 +53,7 @@ if __name__ == "__main__":
         input_data = FT.rec_trans(sample).squeeze(0).permute(1,0,2).to(device)
         # sample shape : [1,624,1,2]
         bf_st = time.time()
-        digits = model(input_data,eval_mask)
+        digits = model(input_data)
         output = torch.argmax(digits[0],dim=1)
         # signal_power = sample['SIGNALPOWER']             # int
         # noise_power = sample['NOISEPOWER']               # int
