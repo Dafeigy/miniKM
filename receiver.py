@@ -29,9 +29,9 @@ if __name__ == "__main__":
     start_time = time.time()
     device = torch.device('cuda:0')
     # eval_mask = torch.ones(1,624).to(device)
-    st = torch.load('new_pt.pt')
+    st = torch.load(r'model\2-27\sameidle\demo23_best_model - 复件(1).pth')
     # new_st = {key.replace("module.", ""): value for key, value in st.items()}
-    new_st = st
+    new_st = st.state_dict()
     args = set_args()
     model = preFN(args=args)
     model.load_state_dict(new_st)
@@ -44,7 +44,6 @@ if __name__ == "__main__":
         print(f"[ MODEL ] WARMING UP : {_+1}/100 NOW:")
         st = time.time()
         random_data = torch.randn(1, 624, 2, 2).to(device)
-        print(random_data.shape)
         digits = model(random_data)
 
     print("[ MODEL ] WARMING UP FINISHED")
